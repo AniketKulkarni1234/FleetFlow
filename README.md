@@ -1,4 +1,4 @@
-# 🚚 FleetFlow — Next-Gen Fleet & Logistics Management System
+# 🚚 FleetFlow — Smart Logistics Management System
 
 FleetFlow is a production-grade, full-stack logistics and fleet management platform built using a modern **Model-View-Controller (MVC)** architecture coupled with a dedicated **Service Layer**. It powers real-time telemetry tracking, trip dispatching, driver safety monitoring, financial ledgering, document compliance, and multi-role RBAC authorization for fleet operations.
 
