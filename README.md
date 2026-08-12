@@ -185,10 +185,10 @@ FleetFlow uses a single environment file at the root: `FleetFlow-Team-NODEXA/.en
 
 ```env
 # Server Configuration (Backend Private)
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/fleetflow
-JWT_SECRET=fd74ab7f8508dbf5806b29086163c8849b2b595fbe9189d4354e4d44ecf6882636c9c861900c2a47c4a82d11cb708b777cc2b4aae5db27eafb26b0573c3e91fb
-CLIENT_URL=http://localhost:5173
+PORT=
+MONGO_URI=
+JWT_SECRET=
+CLIENT_URL=
 NODE_ENV=development
 
 # Client Configuration (Exposed to Vite bundle with VITE_ prefix)
