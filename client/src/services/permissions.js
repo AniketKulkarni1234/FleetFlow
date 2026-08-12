@@ -2,14 +2,20 @@
 
 // Define which roles can access which routes
 const routePermissions = {
-  "/dashboard": ["Manager", "Dispatcher", "SafetyOfficer", "FinancialAnalyst"],
+  "/dashboard": ["Manager", "Dispatcher", "SafetyOfficer", "FinancialAnalyst", "Driver"],
   "/vehicles": ["Manager", "Dispatcher", "SafetyOfficer", "FinancialAnalyst"],
   "/drivers": ["Manager", "Dispatcher", "SafetyOfficer", "FinancialAnalyst"],
-  "/trips": ["Manager", "Dispatcher", "SafetyOfficer", "FinancialAnalyst"],
+  "/trips": ["Manager", "Dispatcher", "SafetyOfficer", "FinancialAnalyst", "Driver"],
   "/maintenance": ["Manager", "SafetyOfficer"],
   "/expenses": ["Manager", "FinancialAnalyst"],
   "/analytics": ["Manager", "FinancialAnalyst"],
-  "/profile": ["Manager", "Dispatcher", "SafetyOfficer", "FinancialAnalyst"],
+  "/profile": ["Manager", "Dispatcher", "SafetyOfficer", "FinancialAnalyst", "Driver"],
+  "/users": ["Manager"],
+  "/incidents": ["Manager", "SafetyOfficer"],
+  "/tracking": ["Manager", "Dispatcher", "SafetyOfficer", "FinancialAnalyst", "Driver"],
+  "/schedule": ["Manager", "Dispatcher"],
+  "/finance": ["Manager", "FinancialAnalyst"],
+  "/fuel": ["Manager", "Dispatcher", "FinancialAnalyst", "Driver"],
 };
 
 // Generic check for route access
@@ -22,7 +28,7 @@ export const isRouteAllowed = (role, path) => {
 
 // Example action permissions (can expand as needed)
 const actionPermissions = {
-  addVehicle: ["Manager"],
+  addVehicle: ["Manager", "Dispatcher"],
   deleteVehicle: ["Manager"],
   changeVehicleStatus: ["Manager", "Dispatcher"],
   addDriver: ["Manager"],
@@ -35,6 +41,8 @@ const actionPermissions = {
   createTrip: ["Manager", "Dispatcher"],
   completeTrip: ["Manager", "Dispatcher"],
   cancelTrip: ["Manager", "Dispatcher"],
+  manageUsers: ["Manager"],
+  reportIncident: ["Manager", "SafetyOfficer"],
 };
 
 export const can = (role, action) => {

@@ -1,9 +1,14 @@
 // client/src/services/api.js
 import axios from "axios";
 
-// Backend base URL
+// Normalize baseURL to strip trailing '/api' if present since page requests include '/api' prefix
+let rawBaseUrl = import.meta.env.VITE_API_URL || "";
+if (rawBaseUrl.endsWith("/api")) {
+  rawBaseUrl = rawBaseUrl.replace(/\/api$/, "");
+}
+
 const API = axios.create({
-  baseURL: "http://localhost:5000", // backend server URL
+  baseURL: rawBaseUrl,
 });
 
 // Add JWT token automatically to every request if exists

@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Core Background & Surface Palette */
+  --bg-deep: #090d16;            /* Rich Dark Obsidian Canvas */
+  --bg-surface: #111827;         /* Solid Executive Charcoal Surface */
+  --bg-card: rgba(17, 24, 39, 0.75); /* Elevated Glass Card */
+  --bg-card-hover: rgba(30, 41, 59, 0.85);
+
+  /* Primary Brand & Interactive Colors */
+  --primary: #2563eb;            /* Corporate Royal Sapphire */
+  --primary-hover: #1d4ed8;      /* Deep Sapphire Hover */
+  --primary-light: rgba(37, 99, 235, 0.12);
+
+  /* Secondary & Accent Colors */
+  --secondary: #475569;          /* Balanced Slate Secondary */
+  --secondary-hover: #334155;
+  --accent: #0284c7;             /* Sky Blue Accent */
+  --accent-light: rgba(2, 132, 199, 0.12);
+
+  /* Semantic Feedback Palette */
+  --success: #10b981;            /* Refined Emerald Green */
+  --success-light: rgba(16, 185, 129, 0.12);
+  --warning: #f59e0b;            /* Warm Amber Gold */
+  --warning-light: rgba(245, 158, 11, 0.12);
+  --danger: #f43f5e;             /* Crisp Crimson Rose */
+  --danger-light: rgba(244, 63, 94, 0.12);
+
+  /* High Readability Typography */
+  --text-main: #f8fafc;          /* High-Contrast Crisp Slate White */
+  --text-muted: #94a3b8;         /* Accessible Readable Subtext */
+  --text-subtle: #64748b;        /* Low-Priority Subtext */
+
+  /* Borders & Dividers */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --border-focus: rgba(37, 99, 235, 0.5);
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-main);
+}
+
+/* Professional Glassmorphism & Elevation */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+}
+
+.glass-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-hover:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Custom Executive Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Subtle Background Animations */
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob {
+  animation: blob 8s infinite alternate ease-in-out;
+}
+
+.animation-delay-2000 { animation-delay: 2s; }
+.animation-delay-4000 { animation-delay: 4s; }
+
+/* Dashboard Cards */
+.stat-card {
+  @apply glass p-6 rounded-2xl relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/40;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary);
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+/* Buttons System */
+.btn-primary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2.5 rounded-xl transition-all active:scale-[0.98] shadow-md shadow-blue-600/20 disabled:opacity-50 disabled:cursor-not-allowed border border-blue-500/30;
+}
+
+.btn-secondary {
+  @apply bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 border border-slate-700/70 font-semibold px-4 py-2.5 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-danger {
+  @apply bg-rose-600 hover:bg-rose-700 text-white font-semibold px-4 py-2.5 rounded-xl transition-all active:scale-[0.98] shadow-md shadow-rose-600/20 disabled:opacity-50 border border-rose-500/30;
+}
+
+.btn-success {
+  @apply bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2.5 rounded-xl transition-all active:scale-[0.98] shadow-md shadow-emerald-600/20 disabled:opacity-50 border border-emerald-500/30;
+}
+
+/* Inputs & Form Controls */
+.input-field {
+  @apply bg-slate-900/90 border border-slate-700/70 text-slate-100 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 outline-none transition-all placeholder:text-slate-500;
+}
+
+.input-with-icon {
+  padding-left: 2.75rem !important;
+}
+
+
+/* Data Tables */
+.table-container {
+  @apply glass rounded-2xl overflow-hidden border border-white/10;
+}
+
+.table-header {
+  @apply bg-slate-900/80 text-slate-400 font-semibold text-xs uppercase tracking-wider border-b border-white/5;
+}
+
+.table-row {
+  @apply border-b border-white/5 hover:bg-slate-800/50 transition-colors text-slate-300;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  @apply animate-pulse bg-slate-800/80 rounded-xl;
+}
+

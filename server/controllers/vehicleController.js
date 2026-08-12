@@ -1,54 +1,86 @@
 // server/controllers/vehicleController.js
-const Vehicle = require("../models/Vehicle");
-
-// Helper to check role on server side (defensive)
-const hasRole = (req, ...roles) => {
-  return req.user && roles.includes(req.user.role);
-};
+const vehicleService = require("../services/vehicleService");
 
 exports.addVehicle = async (req, res) => {
-  if (!hasRole(req, "Manager")) return res.status(403).json({ msg: "Forbidden. Insufficient permissions." });
   try {
-    const vehicle = await Vehicle.create(req.body);
+    const { name, licensePlate, maxCapacity, acquisitionCost } = req.body;
+
+    if (!name || !licensePlate || !maxCapacity) {
+      return res.status(400).json({ msg: "Name, license plate, and max capacity are required" });
+    }
+    if (name.trim().length < 2) {
+      return res.status(400).json({ msg: "Vehicle name must be at least 2 characters" });
+    }
+    if (Number(maxCapacity) <= 0) {
+      return res.status(400).json({ msg: "Max capacity must be greater than 0" });
+    }
+
+    const vehicle = await vehicleService.addVehicle({ name, licensePlate, maxCapacity, acquisitionCost });
     res.status(201).json(vehicle);
   } catch (err) {
-    res.status(500).json({ msg: err.message });
+    if (err.code === 11000) {
+      return res.status(409).json({ msg: "A vehicle with this license plate already exists" });
+    }
+    res.status(err.statusCode || 500).json({ msg: err.message || "Server error. Please try again." });
   }
 };
 
 exports.getVehicles = async (req, res) => {
   try {
-    const vehicles = await Vehicle.find();
+    const vehicles = await vehicleService.getAllVehicles();
     res.json(vehicles);
   } catch (err) {
-    res.status(500).json({ msg: err.message });
+    res.status(err.statusCode || 500).json({ msg: err.message || "Server error. Please try again." });
+  }
+};
+
+exports.updateVehicle = async (req, res) => {
+  try {
+    const { name, licensePlate, maxCapacity, acquisitionCost } = req.body;
+    const updateFields = {};
+
+    if (name) updateFields.name = name.trim();
+    if (licensePlate) updateFields.licensePlate = licensePlate.trim().toUpperCase();
+    if (maxCapacity !== undefined) {
+      if (Number(maxCapacity) <= 0) {
+        return res.status(400).json({ msg: "Max capacity must be greater than 0" });
+      }
+      updateFields.maxCapacity = Number(maxCapacity);
+    }
+    if (acquisitionCost !== undefined) {
+      updateFields.acquisitionCost = Number(acquisitionCost);
+    }
+
+    const vehicle = await vehicleService.updateVehicle(req.params.id, updateFields);
+    res.json(vehicle);
+  } catch (err) {
+    if (err.code === 11000) {
+      return res.status(409).json({ msg: "A vehicle with this license plate already exists" });
+    }
+    res.status(err.statusCode || 500).json({ msg: err.message || "Server error. Please try again." });
   }
 };
 
 exports.updateVehicleStatus = async (req, res) => {
-  if (!hasRole(req, "Manager", "Dispatcher")) return res.status(403).json({ msg: "Forbidden. Insufficient permissions." });
   try {
     const { status } = req.body;
-    const vehicle = await Vehicle.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true }
-    );
+    const validStatuses = ["AVAILABLE", "ON_TRIP", "IN_SHOP", "RETIRED"];
+    if (!status || !validStatuses.includes(status)) {
+      return res.status(400).json({ msg: `Invalid status. Must be one of: ${validStatuses.join(", ")}` });
+    }
+
+    const vehicle = await vehicleService.updateVehicleStatus(req.params.id, status);
     res.json(vehicle);
   } catch (err) {
-    res.status(500).json({ msg: err.message });
+    res.status(err.statusCode || 500).json({ msg: err.message || "Server error. Please try again." });
   }
 };
 
 exports.deleteVehicle = async (req, res) => {
-  if (!hasRole(req, "Manager")) return res.status(403).json({ msg: "Forbidden. Insufficient permissions." });
   try {
-    const vehicle = await Vehicle.findById(req.params.id);
-    if (!vehicle) return res.status(404).json({ msg: "Vehicle not found" });
-    if (vehicle.status === "ON_TRIP") return res.status(400).json({ msg: "Cannot delete vehicle on an active trip" });
-    await Vehicle.findByIdAndDelete(req.params.id);
-    res.json({ msg: "Vehicle deleted successfully" });
+    const result = await vehicleService.deleteVehicle(req.params.id);
+    res.json(result);
   } catch (err) {
-    res.status(500).json({ msg: err.message });
+    res.status(err.statusCode || 500).json({ msg: err.message || "Server error. Please try again." });
   }
 };

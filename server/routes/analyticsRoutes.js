@@ -2,9 +2,17 @@
 const express = require("express");
 const router = express.Router();
 const { verifyToken } = require("../middleware/auth");
-const { calculateFuelEfficiency, calculateVehicleROI } = require("../controllers/analyticsController");
+const { 
+  getAnalyticsReport,
+  getDeliveryPerformance,
+  getDriverPerformance,
+  getFleetUtilizationTrend 
+} = require("../controllers/analyticsController");
 
-router.get("/fuel", verifyToken, calculateFuelEfficiency);
-router.get("/roi", verifyToken, calculateVehicleROI);
+// Get consolidated analytics report
+router.get("/", verifyToken, getAnalyticsReport);
+router.get("/delivery-performance", verifyToken, getDeliveryPerformance);
+router.get("/driver-performance", verifyToken, getDriverPerformance);
+router.get("/utilization-trend", verifyToken, getFleetUtilizationTrend);
 
 module.exports = router;

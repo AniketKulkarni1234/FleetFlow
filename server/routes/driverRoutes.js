@@ -5,12 +5,14 @@ const { verifyToken, requireRole } = require("../middleware/auth");
 const {
   addDriver,
   getDrivers,
+  updateDriver,
   updateDriverStatus,
   deleteDriver,
 } = require("../controllers/driverController");
 
 router.get("/", verifyToken, getDrivers);
 router.post("/", verifyToken, requireRole("Manager"), addDriver);
+router.put("/:id", verifyToken, requireRole("Manager"), updateDriver);
 router.put("/:id/status", verifyToken, requireRole("Manager", "Dispatcher"), updateDriverStatus);
 router.delete("/:id", verifyToken, requireRole("Manager"), deleteDriver);
 
